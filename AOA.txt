@@ -1,0 +1,767 @@
+//binary search......
+
+#include <bits/stdc++.h>
+using namespace std;
+#define max 10
+int binarySearch(int a[], int beg, int end, int val)    
+{    
+    int mid;    
+    if(end >= beg)     
+    {       
+	    mid = (beg + end)/2;    
+        if(a[mid] == val)    
+        {                 
+            return mid+1;    
+        }    
+        else if(a[mid] < val)     
+        {  
+            return binarySearch(a, mid+1, end, val);    
+        }    
+        else     
+        {  
+            return binarySearch(a, beg, mid-1, val);    
+        }          
+    }    
+    return -1;     
+}   
+int main()
+{
+    int a[max],i,n,k;
+	cout<<"ENTER THE MAX TERMS FOR ARRAY ";
+	cin>>n;
+	for(i=0;i<n;i++)
+	{
+		cout<<"ENTER THE ELEMENT IN ARRAY "<<" ";
+		cin>>a[i];
+	}
+	cout<<"ENTER THE ELEMENT TO SEARCH ";
+	cin>>k;
+	int result=binarySearch(a, 0, n - 1, k);
+    if(result == -1)
+    {
+    	cout << "Element is not present in array" ;
+	}
+	else
+	{
+		cout << "Element is present at index " << result;
+	}
+    return 0;
+	
+}
+
+
+
+//MergerSort............
+
+#include<iostream>
+#define max 10
+using namespace std;
+void merge(int arr[],int l,int mid,int h)
+{
+	int i=l;
+	int j=mid+1;
+	int k=l;
+	int u=(h-l)+1;
+	int temp[u];
+	
+	while(i<=mid && j<=h)
+	{
+		if(arr[i]<=arr[j])
+		{
+			temp[k]=arr[i];
+			i++;
+			k++;
+		}
+		else
+		{
+			temp[k]=arr[j];
+			j++;
+			k++;
+		}
+	}
+	while(i<=mid)
+	{
+		temp[k]=arr[i];
+		i++;
+		k++;
+	}
+	while(j<=h)
+	{
+		temp[k]=arr[j];
+		j++;
+		k++;
+	}
+	for(i = l; i <= h; i++) {
+		arr[i] = temp[i];
+	}
+
+}
+void mergesort(int arr[],int l,int h)
+{
+	if(l<h)
+	{
+		int mid=(l+h)/2;
+		mergesort(arr,l,mid);
+		mergesort(arr,mid+1,h);
+		merge(arr,l,mid,h);
+	}
+	
+}
+int main()
+{
+	int a[max],i,n;
+	cout<<"ENTER THE MAX TERMS FOR ARRAY ";
+	cin>>n;
+	for(i=0;i<n;i++)
+	{
+		cout<<"ENTER THE ELEMENT IN ARRAY "<<" ";
+		cin>>a[i];
+	}
+	mergesort(a,0,n-1);
+	cout<<"ARRAY AFTER MERGE SORT ";
+	for(i=0;i<n;i++)
+	{
+		cout<<a[i]<<" ";
+	}
+}
+
+
+
+
+//quicksort......
+
+
+#include <iostream>
+#define max 10
+using namespace std;
+void swap(int* a, int* b) 
+{ 
+    int t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+
+int partition (int arr[], int low, int high) 
+{ 
+    int pivot = arr[high];   
+    int i = (low - 1);   
+   
+    for (int j = low; j <= high- 1; j++) 
+    { 
+        if (arr[j] <= pivot) 
+        { 
+            i++;    
+            swap(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+void quickSort(int arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pivot = partition(arr, low, high); 
+        quickSort(arr, low, pivot - 1); 
+        quickSort(arr, pivot + 1, high); 
+    } 
+} 
+int main() 
+{ 
+    int a[max],i,n;
+	cout<<"ENTER THE MAX TERMS FOR ARRAY ";
+	cin>>n;
+	for(i=0;i<n;i++)
+	{
+		cout<<"ENTER THE ELEMENT IN ARRAY "<<" ";
+		cin>>a[i];
+	}
+	quickSort(a, 0, n-1);
+	cout<<"ARRAY AFTER QUICK SORT ";
+	for(i=0;i<n;i++)
+	{
+		cout<<a[i]<<" ";
+	}
+}
+
+
+
+
+
+
+
+// 01 knapsack...........
+
+#include<bits/stdc++.h>
+using namespace std;
+int knapsack(int w[], int val[], int capacity, int n){
+  if(n<=0 || capacity<=0)
+    return 0;
+  if(w[n-1] <= capacity)
+    return max(val[n-1] + knapsack(w, val, capacity - w[n-1], n-1) , knapsack(w, val, capacity, n-1));
+  else
+    return knapsack(w, val, capacity, n-1);
+}
+main(){
+  int weight[10], value[10], capacity, n;
+  cout<<"ENTER THE CAPACITY: ";
+  cin>>capacity;
+  cout<<"\nENTER THE NUMBER OF ELEMENTS: ";
+  cin>>n;
+  for(int i=0; i<n; i++){
+    cout<<"ENTER THE WEIGHT "<<i+1<<": ";
+    cin>>weight[i];
+    cout<<"ENTER THE VALUE "<<i+1<<": ";
+    cin>>value[i];
+  }
+  cout<<"\nRESULT: "<<knapsack(weight, value, capacity, n);
+}
+
+// type2.........
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void knapsack(int wt[], int val[], int W, int n){
+  int i, w;
+  int K[n + 1][W + 1];
+
+  for (i = 0; i <= n; i++) {
+    for (w = 0; w <= W; w++) {
+      if (i == 0 || w == 0)
+        K[i][w] = 0;
+      else if (wt[i - 1] <= w)
+        K[i][w] = max(val[i - 1] +
+          K[i - 1][w - wt[i - 1]], K[i - 1][w]);
+      else
+        K[i][w] = K[i - 1][w];
+    }
+  }
+  
+  int res = K[n][W];
+  cout<<"\nRESULT: "<< res << endl;
+  
+  w = W;
+  cout<<"ITEMS ARE: ";
+  for (i = n; i > 0 && res > 0; i--) {
+    if (res == K[i - 1][w])
+      continue;
+    else {
+      cout<<"\nWEIGHT: "<<wt[i - 1] <<"  VALUE: "<<val[i-1];
+      res = res - val[i - 1];
+      w = w - wt[i - 1];
+    }
+  }
+}
+
+main(){
+  int weight[10], value[10], capacity, n;
+  cout<<"ENTER THE CAPACITY: ";
+  cin>>capacity;
+  cout<<"\nENTER THE NUMBER OF ELEMENTS: ";
+  cin>>n;
+  for(int i=0; i<n; i++){
+    cout<<"ENTER THE WEIGHT "<<i+1<<": ";
+    cin>>weight[i];
+    cout<<"ENTER THE VALUE "<<i+1<<": ";
+    cin>>value[i];
+  }
+  knapsack(weight, value, capacity, n);
+}
+
+
+
+
+
+// knapsack..........
+
+#include<iostream>
+#define MAX 10
+using namespace std;
+struct product
+{
+  int product_num;
+  int profit;
+  int weight;
+  float ratio;
+  float take_quantity;
+};
+int main()
+{
+  product P[MAX],temp;
+  int i,j,total_product,capacity;
+  float value=0;
+  cout<<"ENTER NUMBER OF ITEMS : ";
+  cin>>total_product;
+  cout<<"ENTER CAPACITY OF SACK : ";
+  cin>>capacity;
+  cout<<"\n";
+  for(i=0;i<total_product;++i)
+  {
+    P[i].product_num=i+1;
+    cout<<"ENTER PROFIT AND WEIGHT OF PRODUCT "<<i+1<<" : ";
+    cin>>P[i].profit>>P[i].weight;
+
+    P[i].ratio=(float)P[i].profit/P[i].weight;
+    P[i].take_quantity=0;
+  }
+
+  //HIGHEST RATIO BASED SORTING
+  for(i=0;i<total_product;++i)
+  {
+    for(j=i+1;j<total_product;++j)
+    {
+      if(P[i].ratio<P[j].ratio)
+      {
+        temp=P[i];
+        P[i]=P[j];
+        P[j]=temp;
+      }
+    }
+  }
+  
+  for(i=0;i<total_product;++i)
+  {
+    if(capacity==0)
+      break;
+    else if(P[i].weight<=capacity)
+    {
+      P[i].take_quantity=1;
+      capacity-=P[i].weight;
+    }
+    else if(P[i].weight>capacity)
+    {
+      P[i].take_quantity=(float)capacity/P[i].weight;
+      capacity=0;
+    }
+  }
+
+  cout<<"\n\nPRODUCTS TO BE TAKEN -";
+  for(i=0;i<total_product;++i)
+  {
+    cout<<"\nTAKE PRODUCT "<<P[i].product_num<<" : "<<P[i].take_quantity*P[i].weight<<" UNITS";
+    value+=P[i].profit*P[i].take_quantity;
+  }
+  cout<<"\nTHE KNAPSACK VALUE IS : "<<value;
+  return 0;
+}
+
+
+
+
+
+
+// LCS..........
+
+#include<bits/stdc++.h>
+using namespace std;
+int lcs(string x, string y, string *z, int m, int n){
+    if(m==0 || n==0){
+        return 0;
+    }
+    else if(x[m-1] == y[n-1]){
+        *z += x[m-1];
+        return 1 + lcs(x,y,z,m-1,n-1);
+    }
+    else{
+        return max(lcs(x,y,z,m-1,n), lcs(x,y,z,m,n-1));
+    }
+}
+
+main(){
+    string a,b,c;
+    int i,j;
+    cout<<"ENTER STRING 1: ";
+    cin>>a;
+    cout<<"ENTER STRING 2: ";
+    cin>>b;
+    i=a.length();
+    j=b.length();
+    c="";
+    cout<<"\nLENGTH OF LCS IS: "<<lcs(a,b,&c,i,j);
+    reverse(c.begin(),c.end());
+    cout<<"\nLCS IS: "<<c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//bfs of graph.............
+
+#include<bits/stdc++.h>
+using namespace std;
+class Solution{
+	public:
+		vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        vector<int> bfs; 
+	    vector<int> vis(V, 0); 
+	    queue<int> q; 
+	    q.push(0); 
+	    vis[0] = 1; 
+	    while(!q.empty()) {
+	        int node = q.front();
+	        q.pop(); 
+	        bfs.push_back(node); 
+	        
+	        for(auto it : adj[node]) {
+	            if(!vis[it]) {
+	                q.push(it); 
+	                vis[it] = 1; 
+	            }
+	        }
+	    }
+	    
+	    return bfs; 
+    }
+};
+int main()
+{
+	int Vertice,Edges;
+	cout<<"ENTER THE TOTAL NUMBER OF VERTICES : ";
+	cin>>Vertice;
+	cout<<"ENTER THE TOTAL NUMBER OF EDGES : "; 
+	cin>>Edges;
+	vector<int> adj[Vertice];
+	for(int i=0;i<Edges;i++)
+	{
+		int u,v;
+		cout<<"Enter "<<i+1<<" edge from : ";
+		cin>>u;
+		cout<<"to : ";
+		cin>>v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	Solution obj;
+	vector<int> ans = obj.bfsOfGraph(Vertice,adj);
+	for(int i=0;i<ans.size();i++)
+	{
+		cout<<ans[i]<<" ";
+	}
+	
+//print the graph
+//	for (int v = 0; v < Vertice; ++v) {
+//        cout << "\n Adjacency list of vertex " << v << "\n head ";
+//        for (auto x : adj[v])
+//            cout << "-> " << x;
+//    }
+
+}
+
+
+
+
+
+
+
+//dfs of graph..........
+
+#include<bits/stdc++.h>
+using namespace std;
+class Solution {
+	public:
+    vector<int> v;
+    void solve(int src,vector<int> &vis,vector<int> g[])
+    {
+        vis[src]=1;
+        v.push_back(src);
+        for(auto x:g[src])
+        {
+            if(!vis[x])
+            {
+                solve(x,vis,g);
+            }
+        }
+    }
+    vector<int> dfsOfGraph(int V, vector<int> adj[]) {
+        v.clear();
+        vector<int> vis(V,0);
+        solve(0,vis,adj);
+        return v;
+    }
+};
+
+
+int main()
+{
+	int Vertice,Edges;
+	cout<<"ENTER THE TOTAL NUMBER OF VERTICES : ";
+	cin>>Vertice;
+	cout<<"ENTER THE TOTAL NUMBER OF EDGES : "; 
+	cin>>Edges;
+	vector<int> adj[Vertice];
+	for(int i=0;i<Edges;i++)
+	{
+		int u,v;
+		cout<<"Enter "<<i+1<<" edge from : ";
+		cin>>u;
+		cout<<"to : ";
+		cin>>v;
+		adj[u].push_back(v);
+	//	adj[v].push_back(u);
+	}
+	Solution obj;
+	vector<int> ans = obj.dfsOfGraph(Vertice,adj);
+	for(int i=0;i<ans.size();i++)
+	{
+		cout<<ans[i]<<" ";
+	}
+//	for (int v = 0; v < Vertice; ++v) {
+//        cout << "\n Adjacency list of vertex " << v << "\n head ";
+//        for (auto x : adj[v])
+//            cout << "-> " << x;
+//    }
+
+}
+
+
+
+
+
+
+
+
+
+
+//prims algorithm............
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int N,m;
+	cout<<"Enter the total number of vertice: ";
+	cin>>N;
+	cout<<"Enter the total number of edges: ";
+	cin>>m;
+	vector<pair<int,int> > adj[N]; 
+	int a,b,wt;
+	for(int i = 0; i<m ; i++){
+		cout<<"Enter "<<i+1<<" edges from : ";
+		cin>>a;
+		cout<<"to : ";
+		cin>>b;
+		cout<<"Enter the weight of the edge : ";
+		cin>>wt;
+		adj[a].push_back(make_pair(b,wt));
+		adj[b].push_back(make_pair(a,wt));
+	}	
+	
+	int parent[N]; 
+      
+    int key[N]; 
+      
+    bool mstSet[N]; 
+  
+    for (int i = 0; i < N; i++) 
+        key[i] = INT_MAX, mstSet[i] = false; 
+  
+
+    key[0] = 0; 
+    parent[0] = -1; 
+    int ansWeight = 0;
+    for (int count = 0; count < N - 1; count++)
+    { 
+        
+        int mini = INT_MAX, u; 
+  
+        for (int v = 0; v < N; v++) 
+            if (mstSet[v] == false && key[v] < mini) 
+                mini = key[v], u = v; 
+                
+        mstSet[u] = true; 
+        
+        for (auto it : adj[u]) {
+            int v = it.first;
+            int weight = it.second;
+            if (mstSet[v] == false && weight < key[v]) 
+                parent[v] = u, key[v] = weight; 
+        }
+            
+    } 
+    
+    
+    for (int i = 1; i < N; i++) 
+        cout << parent[i] << " - " << i <<"\t Weigth of the edge \t"<<key[i]<<"\n"; 
+	return 0;
+}
+
+
+
+
+
+
+
+//kruskal algorithm.....
+
+#include<bits/stdc++.h>
+using namespace std;
+struct node {
+    int u;
+    int v;
+    int wt; 
+    node(int first, int second, int weight) {
+        u = first;
+        v = second;
+        wt = weight;
+    }
+};
+
+bool comp(node a, node b) {
+    return a.wt < b.wt; 
+}
+
+int findPar(int u, vector<int> &parent) {
+    if(u == parent[u]) return u; 
+    return parent[u] = findPar(parent[u], parent); 
+}
+
+void unionn(int u, int v, vector<int> &parent, vector<int> &rank) {
+    u = findPar(u, parent);
+    v = findPar(v, parent);
+    if(rank[u] < rank[v]) {
+    	parent[u] = v;
+    }
+    else if(rank[v] < rank[u]) {
+    	parent[v] = u; 
+    }
+    else {
+    	parent[v] = u;
+    	rank[u]++; 
+    }
+}
+int main(){
+	int N,m;
+	cin >> N >> m;
+	vector<node> edges; 
+	for(int i = 0;i<m;i++) {
+	    int u, v, wt;
+	    cin >> u >> v >> wt; 
+	    edges.push_back(node(u, v, wt)); 
+	}
+	sort(edges.begin(), edges.end(), comp); 
+	
+	vector<int> parent(N);
+	for(int i = 0;i<N;i++) 
+	    parent[i] = i; 
+	vector<int> rank(N, 0); 
+	
+	int cost = 0;
+	vector<pair<int,int>> mst; 
+	for(auto it : edges) {
+	    if(findPar(it.v, parent) != findPar(it.u, parent)) {
+	        cost += it.wt; 
+	        mst.push_back({it.u, it.v}); 
+	        unionn(it.u, it.v, parent, rank); 
+	    }
+	}
+	cout << cost << endl;
+	for(auto it : mst) cout << it.first << " - " << it.second << endl; 
+	return 0;
+}
+
+
+
+
+
+
+Greedy vs Dynamic programming
+
+A Greedy algorithm is an algorithmic paradigm that builds up a solution piece by piece, always choosing the next piece that offers the most obvious and immediate benefit. So the problems where choosing locally optimal also leads to a global solution are best fit for Greedy. 
+
+For example, consider the Fractional Knapsack Problem. The local optimal strategy is to choose the item that has maximum value vs weight ratio. This strategy also leads to global optimal solution because we allowed taking fractions of an item. 
+
+Dynamic programming is mainly an optimization over plain recursion. Wherever we see a recursive solution that has repeated calls for the same inputs, we can optimize it using Dynamic Programming. The idea is to simply store the results of subproblems so that we do not have to re-compute them when needed later. This simple optimization reduces time complexities from exponential to polynomial. For example, if we write a simple recursive solution for Fibonacci Numbers, we get exponential time complexity and if we optimize it by storing solutions of subproblems, time complexity reduces to linear.
+ 
+
+
+
+
+
+
+
+Divide and Conquer Method..........
+
+1. It deals (involves) three steps at each level of recursion:
+Divide the problem into a number of subproblems.
+Conquer the subproblems by solving them recursively.
+Combine the solution to the subproblems into the solution for original subproblems.
+2. It is Recursive.
+3. It does more work on subproblems and hence has more time consumption.
+4. It is a top-down approach.
+5. In this subproblems are independent of each other.
+6. For example: Merge Sort & Binary Search etc.
+
+Dynamic Programming......
+1.It involves the sequence of four steps:
+
+Characterize the structure of optimal solutions.
+
+Recursively defines the values of optimal solutions.
+
+Compute the value of optimal solutions in a Bottom-up minimum.
+
+Construct an Optimal Solution from computed information.
+2. It is non Recursive.
+3. It solves subproblems only once and then stores in the table.
+4. It is a Bottom-up approach.
+5. In this subproblems are interdependent.
+6. For example: Matrix Multiplication.
+
+
+
+
+
+
+
+
+
+
+Las Vegas and Monte Carlo....
+
+Las Vegas: These algorithms always produce correct or optimum result. Time complexity of these algorithms is based on a random value and time complexity is evaluated as expected value. For example, Randomized QuickSort always sorts an input array and expected worst case time complexity of QuickSort is O(nLogn).
+
+Monte Carlo: Produce correct or optimum result with some probability. These algorithms have deterministic running time and it is generally easier to find out worst case time complexity. For example this implementation of Karger’s Algorithm produces minimum cut with probability greater than or equal to 1/n2 (n is number of vertices) and has worst case time complexity as O(E). Another example is Fermet Method for Primality Testing.
+
+A Las Vegas algorithm for this task is to keep picking a random element until we find a 1. A Monte Carlo algorithm for the same is to keep picking a random element until we either find 1 or we have tried maximum allowed times say k.
+The Las Vegas algorithm always finds an index of 1, but time complexity is determined as expect value. The expected number of trials before success is 2, therefore expected time complexity is O(1).
+The Monte Carlo Algorithm finds a 1 with probability [1 – (1/2)k]. Time complexity of Monte Carlo is O(k) which is deterministic
+
+
+
+
+
+
+
+
+Branch and bound........
+
+Branch and bound is an algorithm design paradigm which is generally used for solving combinatorial optimization problems. These problems are typically exponential in terms of time complexity and may require exploring all possible permutations in worst case. The Branch and Bound Algorithm technique solves these problems relatively quickly.
+Let’s see the Branch and Bound Approach to solve the 0/1 Knapsack problem: The Backtracking Solution can be optimized if we know a bound on best possible solution subtree rooted with every node. If the best in subtree is worse than current best, we can simply ignore this node and its subtrees. So we compute bound (best solution) for every node and compare the bound with current best solution before exploring the node.
+
+
+
+
+
+
+
+cooks theorem.....
+
+In computational complexity theory, the Cook–Levin theorem, also known as Cook’s theorem, states that the Boolean satisfiability problem is NP-complete. That is, it is in NP, and any problem in NP can be reduced in polynomial time by a deterministic Turing machine to the Boolean satisfiability problem.
+
+
+
+
+
+
+                BEST        AVERAGE     WORST
+Quick Sort  Ω(n log(n))   θ(n log(n))   O(n^2)   
+Merge Sort  Ω(n log(n))   θ(n log(n))   O(n log(n))
